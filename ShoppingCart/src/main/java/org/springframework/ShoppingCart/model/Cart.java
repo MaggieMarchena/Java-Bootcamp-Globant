@@ -1,17 +1,18 @@
 package org.springframework.ShoppingCart.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 public class Cart {
 
     private Long id;
+    private User user;
     private List<Product> products;
     
-    public Cart(Long id, String content) {
+    public Cart(Long id, User user) {
         this.id = id;
+        this.user = user;
         this.products = new ArrayList<>();
     }
 
@@ -21,6 +22,14 @@ public class Cart {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public List<Product> getProducts() {
@@ -40,17 +49,6 @@ public class Cart {
 			this.products.add(product);
 		}
 	}
-	
-//	public void addMany(Product product, int quantity) {
-//		if(this.products.contains(product)) {
-//			Product inCart = this.findProduct(product);
-//			inCart.addMany(quantity);
-//		}
-//		else {
-//			product.setQuantity(quantity);
-//			this.products.add(product);
-//		}
-//	}
 	
 	public boolean removeProduct(Product product) {
 		return (this.products.remove(product));

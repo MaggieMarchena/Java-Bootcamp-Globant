@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.model.Product;
+import org.springframework.ShoppingCart.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +40,15 @@ public class CartService {
 		if(delete != null) {
 			this.carts.remove(cartID);
 			return delete;
+		}
+		return null;
+	}
+	
+	public Cart setUser(Long cartID, User user) {
+		Cart cart = this.getCart(cartID);
+		if (cart != null) {
+			cart.setUser(user);
+			return cart;
 		}
 		return null;
 	}

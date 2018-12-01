@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.model.Product;
+import org.springframework.ShoppingCart.model.User;
 import org.springframework.ShoppingCart.service.CartService;
 import org.springframework.ShoppingCart.service.ProductService;
+import org.springframework.ShoppingCart.service.UserService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ public class CartController{
 	
 	private ProductService productService;
 	private CartService cartService;
+	private UserService userService;
 	
 	//Cart CRUD
 	@PostMapping("/cart")
@@ -41,6 +44,13 @@ public class CartController{
 	@DeleteMapping("/cart/{id}")
 	public Cart removeCart(@PathVariable("id") Long cartID) {
 		return this.cartService.deleteCart(cartID);
+	}
+	
+	//User
+	@PutMapping("/cart/{cartID}/user/{userID}")
+	public Cart setUser(@PathVariable("cartID") Long cartID, @PathVariable("userID") Long userID) {
+		User user = userService.get(userID);
+		return this.cartService.setUser(cartID, user);
 	}
 	
 	//Products in cart

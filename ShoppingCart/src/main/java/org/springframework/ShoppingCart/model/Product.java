@@ -51,10 +51,6 @@ public class Product {
 	public void addOne() {
 		this.quantity++;
 	}
-
-//	public void addMany(int quantity) {
-//	this.quantity += quantity;
-//}
 	
 	@Override
 	public int hashCode() {
