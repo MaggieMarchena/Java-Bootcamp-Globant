@@ -1,18 +1,19 @@
 package org.springframework.ShoppingCart.model;
 
 public class Product {
+	
+	public static final int INITIAL_QUANTITY = 1;
 
     private Long id;
     private String name;
     private Double price;
     private int quantity;
     
-	public Product(Long id, String name, Double price, int quantity) {
-		super();
+	public Product(Long id, String name, Double price, int INITIAL_QUANTITY) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
-		this.quantity = quantity;
+		this.quantity = INITIAL_QUANTITY;
 	}
 
 	public Long getId() {

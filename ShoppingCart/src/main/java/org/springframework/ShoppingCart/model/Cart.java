@@ -24,7 +24,7 @@ public class Cart {
 	}
 
 	public List<Product> getProducts() {
-		return Collections.unmodifiableList(this.products);
+		return this.products;
 	}
 
 	public void setProducts(List<Product> products) {
