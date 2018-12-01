@@ -1,3 +1,3 @@
 # Java-Bootcamp-Globant
 
-Check REST documentation at http://localhost:8080/swagger-ui.html
+Check REST documentation with app running at http://localhost:8080/swagger-ui.html
