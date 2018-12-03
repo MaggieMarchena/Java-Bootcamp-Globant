@@ -1,9 +1,16 @@
 package org.springframework.ShoppingCart.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User{
 	
+	@Id
 	private Long id;
 	private String name;
+	
+	public User() {}
 	
 	public User(Long id, String name) {
 		this.id = id;
@@ -62,6 +69,11 @@ public class User{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + "]";
 	}
 
 }

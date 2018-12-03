@@ -4,13 +4,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Cart {
 
+	@Id
     private Long id;
+	@OneToOne
     private User user;
+    @ManyToMany
     private List<Product> products;
     
-    public Cart(Long id, User user) {
+    public Cart() {}
+
+	public Cart(Long id, User user) {
         this.id = id;
         this.user = user;
         this.products = new ArrayList<>();
@@ -91,6 +102,11 @@ public class Cart {
 		} else if (!products.equals(other.products))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", user=" + user + ", products=" + products + "]";
 	}
 
 }

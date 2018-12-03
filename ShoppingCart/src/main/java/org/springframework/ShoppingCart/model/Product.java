@@ -1,13 +1,20 @@
 package org.springframework.ShoppingCart.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Product {
 	
 	public static final int INITIAL_QUANTITY = 1;
 
+	@Id
     private Long id;
     private String name;
     private Double price;
     private int quantity;
+    
+    public Product() {}
     
 	public Product(Long id, String name, Double price, int INITIAL_QUANTITY) {
 		this.id = id;
@@ -96,6 +103,11 @@ public class Product {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", quantity=" + quantity + "]";
 	}
 
 }
