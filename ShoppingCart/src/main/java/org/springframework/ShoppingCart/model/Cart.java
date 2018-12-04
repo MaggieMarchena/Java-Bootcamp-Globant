@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
 public class Cart {
 
 	@Id
+	@GeneratedValue
     private Long id;
 	@OneToOne
     private User user;
@@ -21,18 +23,13 @@ public class Cart {
     
     public Cart() {}
 
-	public Cart(Long id, User user) {
-        this.id = id;
+	public Cart(User user) {
         this.user = user;
         this.products = new ArrayList<>();
     }
 
     public Long getId() {
 		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public User getUser() {

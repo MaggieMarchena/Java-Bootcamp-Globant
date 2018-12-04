@@ -1,6 +1,7 @@
 package org.springframework.ShoppingCart.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -9,6 +10,7 @@ public class Product {
 	public static final int INITIAL_QUANTITY = 1;
 
 	@Id
+	@GeneratedValue
     private Long id;
     private String name;
     private Double price;
@@ -16,8 +18,7 @@ public class Product {
     
     public Product() {}
     
-	public Product(Long id, String name, Double price, int INITIAL_QUANTITY) {
-		this.id = id;
+	public Product(String name, Double price) {
 		this.name = name;
 		this.price = price;
 		this.quantity = INITIAL_QUANTITY;
@@ -25,10 +26,6 @@ public class Product {
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
