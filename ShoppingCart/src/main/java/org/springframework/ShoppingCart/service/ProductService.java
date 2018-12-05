@@ -1,45 +1,47 @@
 package org.springframework.ShoppingCart.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.ShoppingCart.model.Product;
+import org.springframework.ShoppingCart.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService{
 	
-	private Map<Long, Product> products = new HashMap<>();
-	private AtomicLong counter = new AtomicLong();
+	@Autowired
+	private ProductRepository productRepository;
 	
 	public Product add(Product product) {
-		if (product.getId() == null) {
-			product.setId(counter.incrementAndGet());
-		}
-		this.products.put(product.getId(), product);
+		this.productRepository.save(product);
 		return product;
 	}
 	
 	public Product get(Long productID) {
-		if (this.products.containsKey(productID)){
-			return this.products.get(productID);
-		}
-		return null;
+		return this.productRepository.findById(productID).get();
 	}
 	
 	public List<Product> getAll(){
-		return (List<Product>) this.products.values();
+		return (List<Product>) this.productRepository.findAll();
+	}
+	
+	public Product setName(Long productID, String name) {
+		Product product = this.get(productID);
+		product.setName(name);
+		return this.productRepository.save(product);
+	}
+	
+	public Product setPrice(Long productID, Double price) {
+		Product product = this.get(productID);
+		product.setPrice(price);
+		return this.productRepository.save(product);
 	}
 	
 	public Product delete(Long productID) {
 		Product delete = this.get(productID);
-		if(delete != null) {
-			this.products.remove(productID);
-			return delete;
-		}
-		return null;
+		this.productRepository.delete(delete);
+		return delete;
 	}
 
 }

@@ -1,74 +1,67 @@
 package org.springframework.ShoppingCart.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.model.Product;
 import org.springframework.ShoppingCart.model.User;
+import org.springframework.ShoppingCart.repository.CartRepository;
+import org.springframework.ShoppingCart.repository.ProductRepository;
+import org.springframework.ShoppingCart.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CartService {
 	
-	private Map<Long, Cart> carts = new HashMap<>();
-	private AtomicLong counter = new AtomicLong();
+	@Autowired
+	private CartRepository cartRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ProductRepository productRepository;
 	
 	public Cart addCart(Cart cart) {
-		if (cart.getId() == null) {
-			cart.setId(counter.incrementAndGet());
-		}
-		this.carts.put(cart.getId(), cart);
+		this.cartRepository.save(cart);
 		return cart;
 	}
 	
 	public Cart getCart(Long cartID) {
-		if (this.carts.containsKey(cartID)){
-			return this.carts.get(cartID);
-		}
-		return null;
+		return this.cartRepository.findById(cartID).get();
 	}
 	
 	public List<Cart> getAllCarts(){
-		return (List<Cart>) this.carts.values();
+		return (List<Cart>) this.cartRepository.findAll();
 	}
 	
 	public Cart deleteCart(Long cartID) {
 		Cart delete = this.getCart(cartID);
-		if(delete != null) {
-			this.carts.remove(cartID);
-			return delete;
-		}
-		return null;
+		this.cartRepository.delete(delete);
+		return delete;
 	}
 	
-	public Cart setUser(Long cartID, User user) {
+	public Cart setUser(Long cartID, Long userID) {
 		Cart cart = this.getCart(cartID);
-		if (cart != null) {
-			cart.setUser(user);
-			return cart;
-		}
-		return null;
+		User user = this.userRepository.findById(userID).get();
+		cart.setUser(user);
+		this.cartRepository.save(cart);
+		return cart;
 	}
 	
-	public Cart addProduct(Long cartID, Product product) {
+	public Cart addProduct(Long cartID, Long productID) {
 		Cart cart = this.getCart(cartID);
-		if (cart != null) {
-			cart.addProduct(product);
-			return cart;
-		}
-		return null;
+		Product product = this.productRepository.findById(productID).get();
+		cart.addProduct(product);
+		this.cartRepository.save(cart);
+		return cart;
 	}
 	
-	public Cart removeProduct(Long cartID, Product product) {
+	public Cart removeProduct(Long cartID, Long productID) {
 		Cart cart = this.getCart(cartID);
-		if (cart != null) {
-			cart.removeProduct(product);
-			return cart;
-		}
-		return null;
+		Product product = this.productRepository.findById(productID).get();
+		cart.removeProduct(product);
+		this.cartRepository.save(cart);
+		return cart;
 	}
 	
 }

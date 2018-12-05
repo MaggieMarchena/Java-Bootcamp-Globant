@@ -1,46 +1,47 @@
 package org.springframework.ShoppingCart.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.model.User;
+import org.springframework.ShoppingCart.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService{
 	
-	private Map<Long, User> users = new HashMap<>();
-	private AtomicLong counter = new AtomicLong();
+	@Autowired
+	private UserRepository userRepository;
 	
 	public User add(User user) {
-		if (user.getId() == null) {
-			user.setId(counter.incrementAndGet());
-		}
-		this.users.put(user.getId(), user);
+		userRepository.save(user);
 		return user;
 	}
 	
 	public User get(Long userID) {
-		if (this.users.containsKey(userID)){
-			return this.users.get(userID);
-		}
-		return null;
+		return userRepository.findById(userID).get();
 	}
 	
 	public List<User> getAll(){
-		return (List<User>) this.users.values();
+		return (List<User>) userRepository.findAll();
+	}
+	
+	public User changeFirstName(Long userID, String firstName) {
+		User user = get(userID);
+		user.setFirstName(firstName);
+		return userRepository.save(user);
+	}
+	
+	public User changeLastName(Long userID, String lastName) {
+		User user = get(userID);
+		user.setLastName(lastName);
+		return userRepository.save(user);
 	}
 	
 	public User delete(Long userID) {
-		User delete = this.get(userID);
-		if(delete != null) {
-			this.users.remove(userID);
-			return delete;
-		}
-		return null;
+		User delete = get(userID);
+		userRepository.delete(delete);
+		return delete;
 	}
 
 }

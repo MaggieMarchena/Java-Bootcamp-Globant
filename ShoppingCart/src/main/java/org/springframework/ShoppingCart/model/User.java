@@ -1,20 +1,28 @@
 package org.springframework.ShoppingCart.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class User{
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String name;
+	private String firstName;
+	private String lastName;
 	
 	public User() {}
 	
-	public User(Long id, String name) {
+	public User(Long id) {
 		this.id = id;
-		this.name = name;
+	}
+	
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public Long getId() {
@@ -25,20 +33,29 @@ public class User{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
 
@@ -54,6 +71,13 @@ public class User{
 			return false;
 		}
 		User other = (User) obj;
+		if (firstName == null) {
+			if (other.firstName != null) {
+				return false;
+			}
+		} else if (!firstName.equals(other.firstName)) {
+			return false;
+		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -61,11 +85,11 @@ public class User{
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
-		if (name == null) {
-			if (other.name != null) {
+		if (lastName == null) {
+			if (other.lastName != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)) {
+		} else if (!lastName.equals(other.lastName)) {
 			return false;
 		}
 		return true;
@@ -73,7 +97,7 @@ public class User{
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 
 }

@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -14,14 +16,16 @@ import javax.persistence.OneToOne;
 public class Cart {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	@OneToOne
     private User user;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
     
-    public Cart() {}
+    public Cart() {
+        this.products = new ArrayList<>();
+    }
 
 	public Cart(User user) {
         this.user = user;
@@ -49,13 +53,7 @@ public class Cart {
 	}
 	
 	public void addProduct(Product product) {
-		if(this.products.contains(product)) {
-			Product inCart = this.findProduct(product);
-			inCart.addOne();
-		}
-		else {
-			this.products.add(product);
-		}
+		this.products.add(product);
 	}
 	
 	public boolean removeProduct(Product product) {
