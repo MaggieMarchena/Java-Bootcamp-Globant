@@ -40,6 +40,11 @@ public class CartService {
 		return delete;
 	}
 	
+	public User getUser(Long cartID) {
+		User user = this.getCart(cartID).getUser();
+		return user;
+	}
+	
 	public Cart setUser(Long cartID, Long userID) {
 		Cart cart = this.getCart(cartID);
 		User user = this.userRepository.findById(userID).get();

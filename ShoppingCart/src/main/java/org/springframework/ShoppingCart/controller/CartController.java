@@ -3,6 +3,7 @@ package org.springframework.ShoppingCart.controller;
 import java.util.List;
 
 import org.springframework.ShoppingCart.model.Cart;
+import org.springframework.ShoppingCart.model.User;
 import org.springframework.ShoppingCart.service.CartService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,11 @@ public class CartController{
 	@PutMapping("/cart/{cartID}/user/{userID}")
 	public Cart setUser(@PathVariable("cartID") Long cartID, @PathVariable("userID") Long userID) {
 		return this.cartService.setUser(cartID, userID);
+	}
+	
+	@GetMapping("/cart/{cartID}/user")
+	public User getUser(@PathVariable("cartID") Long cartID) {
+		return this.cartService.getUser(cartID);
 	}
 	
 	//Products in cart
