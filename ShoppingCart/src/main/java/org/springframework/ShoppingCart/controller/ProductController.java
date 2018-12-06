@@ -1,9 +1,13 @@
 package org.springframework.ShoppingCart.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.ShoppingCart.dto.ProductDto;
 import org.springframework.ShoppingCart.model.Product;
 import org.springframework.ShoppingCart.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,36 +21,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ShoppingCart/v1")
 public class ProductController{
 	
+	@Autowired
 	private ProductService productService;
+	@Autowired
+    private ModelMapper modelMapper;
 	
 	@PostMapping("/product")
-	public Product addProduct(@RequestBody Product product) {
-		return this.productService.add(product);
+	public ProductDto addProduct(@RequestBody ProductDto product) {
+		return this.convertToDto(this.productService.add(this.convertToEntity(product)));
 	}
 
 	@GetMapping("/product/{id}")
-	public Product getProduct(@PathVariable("id") Long productID) {
-		return this.productService.get(productID);
+	public ProductDto getProduct(@PathVariable("id") Long productID) {
+		return this.convertToDto(this.productService.get(productID));
 	}
 	
 	@GetMapping("/product")
-	public List<Product> getAllProducts() {
-		return this.productService.getAll();
+	public List<ProductDto> getAllProducts() {
+		List<Product> products = this.productService.getAll();
+		List<ProductDto> result = new ArrayList<>();
+		for (int i = 0; i < products.size(); i++) {
+			result.add(this.convertToDto(products.get(i)));
+		}
+		return result;
 	}
 	
 	@PutMapping("/product//{id}/attributes/{name}")
-	public Product setName(@PathVariable("id") Long id, @PathVariable("name") String name) {
-		return this.productService.setName(id, name);
+	public ProductDto setName(@PathVariable("id") Long id, @PathVariable("name") String name) {
+		return this.convertToDto(this.productService.setName(id, name));
 	}
 	
 	@PutMapping("/product//{id}/attributes/{price}")
-	public Product setPrice(@PathVariable("id") Long id, @PathVariable("price") Double price) {
-		return this.productService.setPrice(id, price);
+	public ProductDto setPrice(@PathVariable("id") Long id, @PathVariable("price") Double price) {
+		return this.convertToDto(this.productService.setPrice(id, price));
 	}
 
 	@DeleteMapping("/product/{id}")
-	public Product removeProduct(@PathVariable("id") long productID) {
-		return this.productService.delete(productID);
+	public ProductDto removeProduct(@PathVariable("id") long productID) {
+		return this.convertToDto(this.productService.delete(productID));
 	}
 
+	//Conversion
+	private ProductDto convertToDto(Product product) {
+		return  modelMapper.map(product, ProductDto.class);    
+	}
+		
+	private Product convertToEntity(ProductDto productDto) {
+		return modelMapper.map(productDto, Product.class);         
+	}
 }

@@ -24,7 +24,6 @@ public class Cart {
     private List<Product> products;
     
     public Cart() {
-        this.products = new ArrayList<>();
     }
 
 	public Cart(User user) {
