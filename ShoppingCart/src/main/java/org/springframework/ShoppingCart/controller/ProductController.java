@@ -26,17 +26,17 @@ public class ProductController{
 	@Autowired
     private ModelMapper modelMapper;
 	
-	@PostMapping("/product")
+	@PostMapping("/products")
 	public ProductDto addProduct(@RequestBody ProductDto product) {
 		return this.convertToDto(this.productService.add(this.convertToEntity(product)));
 	}
 
-	@GetMapping("/product/{id}")
+	@GetMapping("/products/{id}")
 	public ProductDto getProduct(@PathVariable("id") Long productID) {
 		return this.convertToDto(this.productService.get(productID));
 	}
 	
-	@GetMapping("/product")
+	@GetMapping("/products")
 	public List<ProductDto> getAllProducts() {
 		List<Product> products = this.productService.getAll();
 		List<ProductDto> result = new ArrayList<>();
@@ -46,17 +46,17 @@ public class ProductController{
 		return result;
 	}
 	
-	@PutMapping("/product//{id}/attributes/{name}")
+	@PutMapping("/products/{id}/attributes/{name}")
 	public ProductDto setName(@PathVariable("id") Long id, @PathVariable("name") String name) {
 		return this.convertToDto(this.productService.setName(id, name));
 	}
 	
-	@PutMapping("/product//{id}/attributes/{price}")
+	@PutMapping("/products/{id}/attributes/{price}")
 	public ProductDto setPrice(@PathVariable("id") Long id, @PathVariable("price") Double price) {
 		return this.convertToDto(this.productService.setPrice(id, price));
 	}
 
-	@DeleteMapping("/product/{id}")
+	@DeleteMapping("/products/{id}")
 	public ProductDto removeProduct(@PathVariable("id") long productID) {
 		return this.convertToDto(this.productService.delete(productID));
 	}

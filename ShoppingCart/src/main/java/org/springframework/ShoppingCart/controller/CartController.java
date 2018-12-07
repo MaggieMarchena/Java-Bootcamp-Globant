@@ -27,17 +27,17 @@ public class CartController{
     private ModelMapper modelMapper;
 	
 	//Cart CRUD
-	@PostMapping("/cart")
+	@PostMapping("/carts")
 	public CartDto addCart(@RequestBody CartDto cart) {
 		return this.convertToDto(this.cartService.addCart(this.convertToEntity(cart)));
 	}
 	
-	@GetMapping("/cart/{id}")
+	@GetMapping("/carts/{id}")
 	public CartDto getCart(@PathVariable("id") Long cartID) {
 		return this.convertToDto(this.cartService.getCart(cartID));
 	}
 	
-	@GetMapping("/cart")
+	@GetMapping("/carts")
 	public List<CartDto> getAllCarts() {
 		List<Cart> carts = this.cartService.getAllCarts();
 		List<CartDto> result = new ArrayList<>();
@@ -47,24 +47,24 @@ public class CartController{
         return result;   
 	}
 	
-	@DeleteMapping("/cart/{id}")
+	@DeleteMapping("/carts/{id}")
 	public CartDto removeCart(@PathVariable("id") Long cartID) {
 		return this.convertToDto(this.cartService.deleteCart(cartID));
 	}
 	
 	//User
-	@PutMapping("/cart/{cartID}/user/{userID}")
+	@PutMapping("/carts/{cartID}/users/{userID}")
 	public CartDto setUser(@PathVariable("cartID") Long cartID, @PathVariable("userID") Long userID) {
 		return this.convertToDto(this.cartService.setUser(cartID, userID));
 	}
 	
 	//Products in cart
-	@PutMapping("/cart/{cartID}/products/{productID}")
+	@PutMapping("/carts/{cartID}/products/{productID}")
 	public CartDto addProduct(@PathVariable("cartID") Long cartID, @PathVariable("productID") Long productID) {
 		return this.convertToDto(this.cartService.addProduct(cartID, productID));
 	}
 
-	@DeleteMapping("/cart/{cartID}/products/{productID}")
+	@DeleteMapping("/carts/{cartID}/products/{productID}")
 	public CartDto removeProduct(@PathVariable("cartID") Long cartID, @PathVariable("productID") Long productID) {
 		return this.convertToDto(this.cartService.removeProduct(cartID, productID));
 	}

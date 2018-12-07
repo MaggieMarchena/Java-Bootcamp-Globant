@@ -26,17 +26,17 @@ public class UserController{
 	@Autowired
     private ModelMapper modelMapper;
 	
-	@PostMapping("/user")
+	@PostMapping("/users")
 	public UserDto add(@RequestBody UserDto user) {
 		return this.convertToDto(this.userService.add(this.convertToEntity(user)));
 	}
 
-	@GetMapping("/user/{id}")
+	@GetMapping("/users/{id}")
 	public UserDto get(@PathVariable("id") Long userID) {
 		return this.convertToDto(this.userService.get(userID));
 	}
 	
-	@GetMapping("/user")
+	@GetMapping("/users")
 	public List<UserDto> getAll() {
 		List<User> users = this.userService.getAll();
 		List<UserDto> result = new ArrayList<>();
@@ -46,17 +46,17 @@ public class UserController{
 		return result;
 	}
 	
-	@PutMapping("/user//{id}/attributes/{firstName}")
+	@PutMapping("/users/{id}/attributes/{firstName}")
 	public UserDto setFirstName(@PathVariable("id") Long id, @PathVariable("firstName") String firstName) {
 		return this.convertToDto(this.userService.changeFirstName(id, firstName));
 	}
 	
-	@PutMapping("/user//{id}/attributes/{lastName}")
+	@PutMapping("/users/{id}/attributes/{lastName}")
 	public UserDto setLastName(@PathVariable("id") Long id, @PathVariable("lastName") String lastName) {
 		return this.convertToDto(this.userService.changeFirstName(id, lastName));
 	}
 
-	@DeleteMapping("/user/{id}")
+	@DeleteMapping("/users/{id}")
 	public UserDto delete(@PathVariable("id") long userID) {
 		return this.convertToDto(this.userService.delete(userID));
 	}
