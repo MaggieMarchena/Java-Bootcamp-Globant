@@ -13,10 +13,6 @@ public class UserDto{
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
-	public Long getId() {
-		return id;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -32,5 +28,9 @@ public class UserDto{
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

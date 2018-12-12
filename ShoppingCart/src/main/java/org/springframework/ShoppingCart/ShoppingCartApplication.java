@@ -20,23 +20,23 @@ public class ShoppingCartApplication {
 	
 	@Bean
 	public CommandLineRunner demo(UserService userService, CartService cartService, ProductService productService) {
-		
-		User u1 = new User();
-		User u2 = new User();
-		User u3 = new User();
-		User u4 = new User();
-		User u5 = new User();
-		
-		Product p1 = new Product();
-		Product p2 = new Product();
-		Product p3 = new Product();
-		Product p4 = new Product();
-		Product p5 = new Product();
-	
-		Cart c1 = new Cart();
-		Cart c2 = new Cart();
-		
+
 		return (args) -> {
+			
+			User u1 = new User();
+			User u2 = new User();
+			User u3 = new User();
+			User u4 = new User();
+			User u5 = new User();
+			
+			Product p1 = new Product();
+			Product p2 = new Product();
+			Product p3 = new Product();
+			Product p4 = new Product();
+			Product p5 = new Product();
+			
+			Cart c1 = new Cart();
+			Cart c2 = new Cart();
 			
 			userService.add(u1);
 			userService.changeFirstName(u1.getId(), "Dave");
@@ -79,8 +79,8 @@ public class ShoppingCartApplication {
 			productService.setName(p5.getId(), "Bag");
 			productService.setPrice(p5.getId(), 4.20);
 			
-			cartService.addCart(c1);
-			cartService.addCart(c2);
+			c1 = cartService.addCart(c1);
+			c2 = cartService.addCart(c2);
 			
 			cartService.setUser(c1.getId(), u1.getId());
 			cartService.setUser(c2.getId(), u2.getId());

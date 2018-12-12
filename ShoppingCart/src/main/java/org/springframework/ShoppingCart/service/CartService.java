@@ -10,8 +10,10 @@ import org.springframework.ShoppingCart.repository.ProductRepository;
 import org.springframework.ShoppingCart.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CartService {
 	
 	@Autowired
@@ -22,12 +24,12 @@ public class CartService {
 	private ProductRepository productRepository;
 	
 	public Cart addCart(Cart cart) {
-		this.cartRepository.save(cart);
-		return cart;
+		return this.cartRepository.save(cart);
 	}
 	
 	public Cart getCart(Long cartID) {
-		return this.cartRepository.findById(cartID).get();
+		Cart cart = this.cartRepository.findById(cartID).get();
+		return cart;
 	}
 	
 	public List<Cart> getAllCarts(){

@@ -12,27 +12,35 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+import lombok.Getter;
+
 @Entity
 public class Cart {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+	private Long id;
 	@OneToOne
     private User user;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private List<Product> products;
     
     public Cart() {
+    	this.products = new ArrayList<>();
     }
 
 	public Cart(User user) {
         this.user = user;
         this.products = new ArrayList<>();
     }
-
-    public Long getId() {
-		return this.id;
+	
+	public void initList() {
+		this.products.size();
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	public User getUser() {
@@ -44,13 +52,13 @@ public class Cart {
 	}
 
 	public List<Product> getProducts() {
-		return this.products;
+		return products;
 	}
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	
+
 	public void addProduct(Product product) {
 		this.products.add(product);
 	}
