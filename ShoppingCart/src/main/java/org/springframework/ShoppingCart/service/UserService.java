@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.ShoppingCart.model.User;
 import org.springframework.ShoppingCart.repository.UserRepository;
-import org.springframework.ShoppingCart.repository.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +15,13 @@ public class UserService{
 	private UserRepository userRepository;
 	
 	public User add(User user) {
-		userRepository.save(user);
-		return user;
+		return this.userRepository.save(user);
 	}
 	
-	public User get(Long userID) throws UserNotFoundException{
+	public User get(Long userID) throws IllegalArgumentException{
 		Optional<User> user = this.userRepository.findById(userID);
 		if(user.equals(Optional.empty())) {
-			throw new UserNotFoundException("User not found in repository with Id: " + userID);
+			throw new IllegalArgumentException("User not found with Id: " + userID);
 		}
 		return user.get();
 	}
@@ -32,19 +30,19 @@ public class UserService{
 		return (List<User>) userRepository.findAll();
 	}
 	
-	public User changeFirstName(Long userID, String firstName) throws UserNotFoundException {
+	public User changeFirstName(Long userID, String firstName) throws IllegalArgumentException {
 		User user = get(userID);
 		user.setFirstName(firstName);
 		return userRepository.save(user);
 	}
 	
-	public User changeLastName(Long userID, String lastName) throws UserNotFoundException {
+	public User changeLastName(Long userID, String lastName) throws IllegalArgumentException {
 		User user = get(userID);
 		user.setLastName(lastName);
 		return userRepository.save(user);
 	}
 	
-	public User delete(Long userID) throws UserNotFoundException {
+	public User delete(Long userID) throws IllegalArgumentException {
 		User delete = get(userID);
 		userRepository.delete(delete);
 		return delete;

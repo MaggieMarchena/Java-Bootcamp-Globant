@@ -6,7 +6,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.ShoppingCart.dto.UserDto;
 import org.springframework.ShoppingCart.model.User;
-import org.springframework.ShoppingCart.repository.exception.UserNotFoundException;
 import org.springframework.ShoppingCart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,8 +38,8 @@ public class UserController{
 		try {
 			return this.convertToDto(this.userService.get(userID));
 		}
-		catch(UserNotFoundException ex) {
-			throw new RuntimeException(ex);
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found", ex);
 		}
 	}
 	
@@ -59,7 +58,7 @@ public class UserController{
 		try {
 			return this.convertToDto(this.userService.changeFirstName(id, firstName));
 		}
-		catch(UserNotFoundException ex) {
+		catch(IllegalArgumentException ex) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct User Id", ex);
 		}
 	}
@@ -69,7 +68,7 @@ public class UserController{
 		try {
 			return this.convertToDto(this.userService.changeFirstName(id, lastName));
 		}
-		catch(UserNotFoundException ex) {
+		catch(IllegalArgumentException ex) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct User Id", ex);
 		}
 	}
@@ -79,7 +78,7 @@ public class UserController{
 		try {
 			return this.convertToDto(this.userService.delete(userID));
 		}
-		catch(UserNotFoundException ex) {
+		catch(IllegalArgumentException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found", ex);
 		}
 	}

@@ -1,6 +1,7 @@
 package org.springframework.ShoppingCart.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.model.Product;
@@ -27,27 +28,30 @@ public class CartService {
 		return this.cartRepository.save(cart);
 	}
 	
-	public Cart getCart(Long cartID) {
-		Cart cart = this.cartRepository.findById(cartID).get();
-		return cart;
+	public Cart getCart(Long cartID) throws IllegalArgumentException{
+		Optional<Cart> cart = this.cartRepository.findById(cartID);
+		if(cart.equals(Optional.empty())) {
+			throw new IllegalArgumentException("Cart not found with Id: " + cartID);
+		}
+		return cart.get();
 	}
 	
 	public List<Cart> getAllCarts(){
 		return (List<Cart>) this.cartRepository.findAll();
 	}
 	
-	public Cart deleteCart(Long cartID) {
+	public Cart deleteCart(Long cartID) throws IllegalArgumentException{
 		Cart delete = this.getCart(cartID);
 		this.cartRepository.delete(delete);
 		return delete;
 	}
 	
-	public User getUser(Long cartID) {
+	public User getUser(Long cartID) throws IllegalArgumentException{
 		User user = this.getCart(cartID).getUser();
 		return user;
 	}
 	
-	public Cart setUser(Long cartID, Long userID) {
+	public Cart setUser(Long cartID, Long userID) throws IllegalArgumentException{
 		Cart cart = this.getCart(cartID);
 		User user = this.userRepository.findById(userID).get();
 		cart.setUser(user);
@@ -55,7 +59,7 @@ public class CartService {
 		return cart;
 	}
 	
-	public Cart addProduct(Long cartID, Long productID) {
+	public Cart addProduct(Long cartID, Long productID) throws IllegalArgumentException{
 		Cart cart = this.getCart(cartID);
 		Product product = this.productRepository.findById(productID).get();
 		cart.addProduct(product);
@@ -63,7 +67,7 @@ public class CartService {
 		return cart;
 	}
 	
-	public Cart removeProduct(Long cartID, Long productID) {
+	public Cart removeProduct(Long cartID, Long productID) throws IllegalArgumentException{
 		Cart cart = this.getCart(cartID);
 		Product product = this.productRepository.findById(productID).get();
 		cart.removeProduct(product);

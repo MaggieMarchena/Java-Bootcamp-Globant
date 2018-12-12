@@ -8,6 +8,7 @@ import org.springframework.ShoppingCart.dto.CartDto;
 import org.springframework.ShoppingCart.model.Cart;
 import org.springframework.ShoppingCart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/ShoppingCart/v1")
@@ -27,14 +29,19 @@ public class CartController{
     private ModelMapper modelMapper;
 	
 	//Cart CRUD
-//	@PostMapping("/carts")
-//	public CartDto addCart(@RequestBody CartDto cart) {
-//		return this.convertToDto(this.cartService.addCart(this.convertToEntity(cart)));
-//	}
+	@PostMapping("/carts")
+	public CartDto addCart(@RequestBody CartDto cart) {
+		return this.convertToDto(this.cartService.addCart(this.convertToEntity(cart)));
+	}
 	
 	@GetMapping("/carts/{id}")
 	public CartDto getCart(@PathVariable("id") Long cartID) {
-		return this.convertToDto(this.cartService.getCart(cartID));
+		try {
+			return this.convertToDto(this.cartService.getCart(cartID));
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart Not Found", ex);
+		}
 	}
 	
 	@GetMapping("/carts")
@@ -49,24 +56,44 @@ public class CartController{
 	
 	@DeleteMapping("/carts/{id}")
 	public CartDto removeCart(@PathVariable("id") Long cartID) {
-		return this.convertToDto(this.cartService.deleteCart(cartID));
+		try {
+			return this.convertToDto(this.cartService.deleteCart(cartID));
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found", ex);
+		}
 	}
 	
 	//User
 	@PutMapping("/carts/{cartID}/users/{userID}")
 	public CartDto setUser(@PathVariable("cartID") Long cartID, @PathVariable("userID") Long userID) {
-		return this.convertToDto(this.cartService.setUser(cartID, userID));
+		try {
+			return this.convertToDto(this.cartService.setUser(cartID, userID));
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct Cart Id", ex);
+		}
 	}
 	
 	//Products in cart
 	@PutMapping("/carts/{cartID}/products/{productID}")
 	public CartDto addProduct(@PathVariable("cartID") Long cartID, @PathVariable("productID") Long productID) {
-		return this.convertToDto(this.cartService.addProduct(cartID, productID));
+		try {
+			return this.convertToDto(this.cartService.addProduct(cartID, productID));
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct Cart Id", ex);
+		}
 	}
 
 	@DeleteMapping("/carts/{cartID}/products/{productID}")
 	public CartDto removeProduct(@PathVariable("cartID") Long cartID, @PathVariable("productID") Long productID) {
-		return this.convertToDto(this.cartService.removeProduct(cartID, productID));
+		try {
+			return this.convertToDto(this.cartService.removeProduct(cartID, productID));
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct Cart Id", ex);
+		}
 	}
 	
 	//Conversion
