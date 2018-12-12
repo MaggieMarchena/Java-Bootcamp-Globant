@@ -23,7 +23,7 @@ public class UserService{
 	public User get(Long userID) throws UserNotFoundException{
 		Optional<User> user = this.userRepository.findById(userID);
 		if(user.equals(Optional.empty())) {
-			throw new UserNotFoundException("User not found in repository");
+			throw new UserNotFoundException("User not found in repository with Id: " + userID);
 		}
 		return user.get();
 	}

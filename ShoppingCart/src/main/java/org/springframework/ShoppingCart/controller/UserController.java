@@ -40,7 +40,7 @@ public class UserController{
 			return this.convertToDto(this.userService.get(userID));
 		}
 		catch(UserNotFoundException ex) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found", ex);
+			throw new RuntimeException(ex);
 		}
 	}
 	
