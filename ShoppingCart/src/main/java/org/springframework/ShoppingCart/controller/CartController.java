@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.ShoppingCart.dto.CartDto;
+import org.springframework.ShoppingCart.dto.ProductDto;
 import org.springframework.ShoppingCart.model.Cart;
+import org.springframework.ShoppingCart.model.Product;
 import org.springframework.ShoppingCart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,6 +78,21 @@ public class CartController{
 	}
 	
 	//Products in cart
+	@GetMapping("/carts/{cartID}/products")
+	public List<ProductDto> detAllProducts(@PathVariable("cartID") Long cartID) {
+		try {
+			List<Product> products = this.cartService.getAllProducts(cartID);
+			List<ProductDto> result = new ArrayList<>();
+			for(int i=0; i<products.size(); i++) {
+				result.add(this.convertToDto(products.get(i)));
+			}
+			return result;
+		}
+		catch(IllegalArgumentException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct Cart Id", ex);
+		}
+	}
+	
 	@PutMapping("/carts/{cartID}/products/{productID}")
 	public CartDto addProduct(@PathVariable("cartID") Long cartID, @PathVariable("productID") Long productID) {
 		try {
@@ -99,6 +116,10 @@ public class CartController{
 	//Conversion
 	private CartDto convertToDto(Cart cart) {
         return  modelMapper.map(cart, CartDto.class);    
+    }
+	
+	private ProductDto convertToDto(Product product) {
+        return  modelMapper.map(product, ProductDto.class);    
     }
 	
 	private Cart convertToEntity(CartDto cartDto) {

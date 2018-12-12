@@ -59,6 +59,12 @@ public class CartService {
 		return cart;
 	}
 	
+	public List<Product> getAllProducts(Long cartID) throws IllegalArgumentException{
+		Cart cart = this.getCart(cartID);
+		List<Product> products = cart.getProducts();
+		return products;
+	}
+	
 	public Cart addProduct(Long cartID, Long productID) throws IllegalArgumentException{
 		Cart cart = this.getCart(cartID);
 		Product product = this.productRepository.findById(productID).get();
